@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mail Forwarding Schedule</title>
+  <style>
+    /* Styling for the page */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #05b920;
+      display: flex;
+      justify-content: flex-start; /* Align everything to the top */
+      align-items: flex-start;
+      height: 100vh;
+      flex-direction: column;
+    }
+
+    /* Container for the title */
+    .title-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    /* Styling for the page */
+    .calendar-container {
+      width: 100%;
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 0;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Style for the iframe (calendar) */
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+      margin-top: 0; /* Make sure it's at the very top */
+    }
+
+    /* Status Update Form Styling */
+    .status-form {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 600px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .status-form input, .status-form select, .status-form button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    .status-updates {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 600px;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .status-entry {
+      padding: 10px;
+      background-color: #f9f9f9;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    /* Clear Button Styling */
+    .clear-button {
+      background-color: red;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 20px;
+      width: 100%;
+      max-width: 200px;
+      text-align: center;
+    }
+
+    .clear-button:hover {
+      background-color: darkred;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Title Container -->
+  <div class="title-container">
+    <h1>Mail Forwarding Schedule</h1>
+  </div>
+
+  <!-- Google Calendar Embed -->
+  <div class="calendar-container">
+    <iframe src="https://calendar.google.com/calendar/embed?src=c_0238ab8bf0288b925e92c78cd58b01e1e25f4c2a811506b2a68bc02690344ed7%40group.calendar.google.com&ctz=America%2FLos_Angeles"
+            frameborder="0" scrolling="no"></iframe>
+  </div>
+
+  <!-- Status Update Form -->
+  <div class="status-form">
+    <h2>Update Event Status</h2>
+    <form id="statusForm">
+      <label for="eventName">Select Event:</label>
+      <select id="eventName" required>
+        <option value="">--Select Event--</option>
+        <option value="Weekly Mail Forwarding">Weekly Mail Forwarding</option>
+        <option value="Bi-Weekly Mail Forwarding">Bi-Weekly Mail Forwarding</option>
+        <option value="Monthly Mail Forwarding">Monthly Mail Forwarding</option>
+      </select>
+
+      <label for="building">Select Building:</label>
+      <select id="building" required>
+        <option value="">--Select Building--</option>
+        <option value="1721 Broadway">1721 Broadway</option>
+        <option value="2323 Broadway">2323 Broadway</option>
+      </select>
+
+      <label for="status">Status:</label>
+      <select id="status" required>
+        <option value="">--Select Status--</option>
+        <option value="Completed">Completed</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Not Started">Not Started</option>
+      </select>
+
+      <label for="employeeName">Employee Name:</label>
+      <input type="text" id="employeeName" placeholder="Enter your name" required>
+
+      <button type="submit">Update Status</button>
+    </form>
+  </div>
+
+  <!-- Display Status Updates -->
+  <div class="status-updates" id="statusUpdates">
+    <h2>Status Updates:</h2>
+    <!-- Status entries will be shown here -->
+  </div>
+
+  <!-- Clear Button -->
+  <button class="clear-button" id="clearButton">Clear Status Updates</button>
+
+  <script>
+    // Handle the form submission
+    document.getElementById('statusForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent the form from refreshing the page
+
+      // Get form values
+      const eventName = document.getElementById('eventName').value;
+      const building = document.getElementById('building').value;
+      const status = document.getElementById('status').value;
+      const employeeName = document.getElementById('employeeName').value;
+
+      if (eventName && building && status && employeeName) {
+        // Get the current date and time
+        const currentDateTime = new Date().toLocaleString();
+
+        // Create a new status entry
+        const statusEntry = document.createElement('div');
+        statusEntry.classList.add('status-entry');
+        statusEntry.innerHTML = `<strong>${eventName} (${building}):</strong> ${status} <br><em>Updated by: ${employeeName} on ${currentDateTime}</em>`;
+
+        // Add the new entry to the status updates section
+        document.getElementById('statusUpdates').appendChild(statusEntry);
+
+        // Optionally, reset the form
+        document.getElementById('statusForm').reset();
+      } else {
+        alert('Please fill out all fields.');
+      }
+    });
+
+    // Handle the Clear Status Updates button
+    document.getElementById('clearButton').addEventListener('click', function() {
+      // Clear all status updates
+      document.getElementById('statusUpdates').innerHTML = '<h2>Status Updates:</h2>';
+    });
+  </script>
+
+</body>
+</html>
